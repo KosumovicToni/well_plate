@@ -1,9 +1,28 @@
 <script lang="ts">
   import Pot from "$lib/components/Pot.svelte";
+  import Farmaco from "$lib/components/Farmaco.svelte";
+
   let rows = $state(8);
   let cols = $state(12);
 
+  type farmaco = {
+    name: string | null;
+    color: string | null;
+  };
+
   const alf = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+
+  let pop: boolean = $state(false);
+  let farmaci: farmaco[] = $state([]);
+
+  let name:string = $state("");
+  let color:string = $state("");
+
+  function addFarmaco() {
+    farmaci.push({ name, color });
+    name = "";
+    color = "";
+  }
 </script>
 
 <div class="flex flex-col w-screen h-screen">
@@ -12,13 +31,44 @@
   >
     <div class="grid grid-cols-1 lg:grid-cols-4 w-screen justify-items-center">
       <div
-        class="grd grd-cols-1 justify-item-center text-center font-bold lg:ml-auto my-5 border-b-2 lg:border-none"
+        class="grd grd-cols-1 justify-item-center text-center font-bold lg:ml-auto my-5"
       >
         <h1 class="text-3xl mb-2">Lista Farmaci</h1>
+
+        {#each farmaci as farmaco }
+          <Farmaco name={farmaco.name} color={farmaco.color} />
+        {/each}
+
         <button
           class="font-bold rounded-lg border-2 w-20 transition duration-500 opacity-60 hover:opacity-100"
-          >+</button
+          onclick={() => {
+            pop = !pop;
+          }}>+</button
         >
+
+        {#if pop}
+          <div
+            class="absolute z-10 bg-white border-2 rounded-lg w-auto mt-2 h-auto p-2 grid grid-cols-1 justify-items-center"
+          >
+            <div class="">
+              <label for="">Farmaco : </label>
+              <input type="text" class="border-b-1" bind:value={name} />
+            </div>
+            <div class="">
+              <label for="">Colore : </label>
+              <input type="text" class="border-b-1" bind:value={color} />
+            </div>
+            <button
+              class="font-bold rounded-lg border-2 w-20 mt-2 transition duration-500"
+              style="opacity: {(name.length == 0 || color.length == 0)? '0.5' : '1'}"
+              disabled={name.length == 0 || color.length == 0}
+              onclick={() => {
+                addFarmaco();
+                pop = !pop;
+              }}>add</button
+            >
+          </div>
+        {/if}
       </div>
       <div class="col-span-3">
         {#each { length: rows + 1 } as _, i}
@@ -40,7 +90,7 @@
               </div>
 
               {#each { length: cols } as _, j}
-                <Pot />
+                <Pot {farmaci} />
               {/each}
             {/if}
           </div>
