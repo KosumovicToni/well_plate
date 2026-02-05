@@ -32,8 +32,8 @@
   </div>
   <div class="flex justifly-between text-start">
     <label for="">Dose : </label>
-    <div>
-      <input type="nuber" class="border-b-1 text-center" bind:value={dose} />
+    <div class="flex flex-row">
+      <input type="text" class="border-b-1 text-center" bind:value={dose} />
       <select name="unit" id="unit" bind:value={unit}>
         <option value="uM">uM</option>
         <option value="nM">nM</option>

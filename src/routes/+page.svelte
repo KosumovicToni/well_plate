@@ -23,11 +23,11 @@
 
 <div class="flex flex-col w-screen h-screen">
   <Navbar />
-  <div
-    class="flex flex-col md:flex-row lg:flex-row h-screen w-screen items-center bg-white"
-  >
-    <div class="flex flex-col grow text-center font-bold lg:ml-auto my-5">
-      <h1 class="text-3xl mb-2">Lista Farmaci</h1>
+  <div class="flex flex-col md:flex-row lg:flex-row h-screen w-screen bg-white">
+    <div
+      class="flex flex-col grow text-center my-auto font-bold lg:ml-auto my-5"
+    >
+      <h1 class="text-3xl mb-2">Legend</h1>
       <div class="flex flex-col w-full items-center">
         {#each farmaci as farmaco}
           <Farmaco
@@ -51,22 +51,26 @@
         {/if}
       </div>
     </div>
-    <div class="flex flex-col grow">
+    <div class="flex flex-col my-auto grow">
       {#each { length: rows + 1 } as _, i}
         <div
-          class="grid justify-items-center gap-4 py-1"
+          class="grid justify-items-center gap-7 p-2"
           style="grid-template-columns: repeat({cols + 1}, minmax(0, 40px));"
         >
           {#if i === 0}
             <div class="w-10"></div>
 
             {#each { length: cols } as _, j}
-              <div class="flex items-center justify-center w-12 h-12">
+              <div
+                class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-12 md:w-12"
+              >
                 <p class="font-bold text-black text-sm">{j + 1}</p>
               </div>
             {/each}
           {:else}
-            <div class="flex items-center justify-center w-12 h-12">
+            <div
+              class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-12 md:w-12"
+            >
               <p class="font-bold text-black text-sm">{alf[i]}</p>
             </div>
 
