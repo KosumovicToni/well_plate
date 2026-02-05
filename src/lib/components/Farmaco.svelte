@@ -3,9 +3,9 @@
 </script>
 
 <div
-  class="flex items-center justify-between p-4 m-1 border-2 rounded-lg font-bold bg-white min-w-0 gap-4"
+  class="flex flex-row items-center justify-between p-3 m-1 border-2 rounded-lg font-bold bg-white w-full lg:max-w-1/2 gap-2"
 >
-  <div class="min-w-0 max-w-68 flex-1">
+  <div class="min-w-0 lg:max-w-12s0 flex-1">
     <p class="text-wrap break-words leading-tight text-gray-800">
       {name}
     </p>

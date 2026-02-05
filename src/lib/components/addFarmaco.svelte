@@ -24,7 +24,7 @@
 </script>
 
 <div
-  class="absolute top-6 -inset-x-22 sm:-inset-x-22 md:-inset-x-0 lg:inset-x-12 xl:inset-x-56 z-10 bg-white border-2 rounded-lg w-94 mt-2 h-auto p-2 grid grid-cols-1 justify-center"
+  class="absolute top-6 z-10 bg-white border-2 rounded-lg w-94 mt-2 h-auto p-2 grid grid-cols-1 justify-center"
 >
   <div class="flex justifly-between text-start">
     <label for="">Farmaco : </label>

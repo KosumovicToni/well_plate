@@ -28,16 +28,17 @@
   >
     <div class="flex flex-col grow text-center font-bold lg:ml-auto my-5">
       <h1 class="text-3xl mb-2">Lista Farmaci</h1>
-
-      {#each farmaci as farmaco}
-        <Farmaco
-          name={farmaco.name}
-          dose={farmaco.dose}
-          unit={farmaco.unit}
-          color={farmaco.color}
-        />
-      {/each}
-      <div class="relative">
+      <div class="flex flex-col w-full items-center">
+        {#each farmaci as farmaco}
+          <Farmaco
+            name={farmaco.name}
+            dose={farmaco.dose}
+            unit={farmaco.unit}
+            color={farmaco.color}
+          />
+        {/each}
+      </div>
+      <div class="relative flex flex-col items-center">
         <button
           class="font-bold rounded-lg border-2 w-20 transition duration-500 opacity-60 hover:opacity-100"
           onclick={() => {
