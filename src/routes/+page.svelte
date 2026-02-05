@@ -1,10 +1,12 @@
 <script lang="ts">
+  import Navbar from "$lib/components/Navbar.svelte";
+  import Footer from "$lib/components/Footer.svelte";
   import Pot from "$lib/components/Pot.svelte";
   import Farmaco from "$lib/components/Farmaco.svelte";
   import AddFarmaco from "$lib/components/addFarmaco.svelte";
 
-  let rows = $state(8);
-  let cols = $state(12);
+  let rows = $state(6);
+  let cols = $state(8);
 
   type farmaco = {
     name: string;
@@ -17,46 +19,14 @@
 
   let pop: boolean = $state(false);
   let farmaci: farmaco[] = $state([]);
-  let colors: string[] = ["red", "blue", "green", "orange", "purple", "brown"];
-
-  let name: string = $state("");
-  let color: string = $state(colors[0]);
-  let dose: number | undefined = $state();
-  let unit: string = $state("uM");
 </script>
 
 <div class="flex flex-col w-screen h-screen">
-  <div class="flex justify-between">
-    <h1 class="p-2 text-2xl font-bold">weel-plate</h1>
-    <button
-      aria-label="pdf"
-      class="rounded-lg border-2 m-2 hover:bg-gray-50 transition-all"
-      onclick={() => {
-        console.log("pdf printing");
-      }}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="size-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-        />
-      </svg>
-    </button>
-  </div>
-  <div
-    class="flex flex-col h-screen w-screen items-center justify-center bg-white"
-  >
+  <Navbar />
+  <div class="flex h-screen w-screen items-center bg-white">
     <div class="grid grid-cols-1 lg:grid-cols-4 w-screen justify-items-center">
       <div
-        class="grd grd-cols-1 justify-item-center text-center font-bold lg:ml-auto my-5"
+        class="flex flex-col items-center text-center font-bold lg:ml-auto my-5"
       >
         <h1 class="text-3xl mb-2">Lista Farmaci</h1>
 
@@ -68,25 +38,18 @@
             color={farmaco.color}
           />
         {/each}
+        <div class="relative">
+          <button
+            class="font-bold rounded-lg border-2 w-20 transition duration-500 opacity-60 hover:opacity-100"
+            onclick={() => {
+              pop = !pop;
+            }}>+</button
+          >
 
-        <button
-          class="font-bold rounded-lg border-2 w-20 transition duration-500 opacity-60 hover:opacity-100"
-          onclick={() => {
-            pop = !pop;
-          }}>+</button
-        >
-
-        {#if pop}
-          <AddFarmaco
-            bind:name
-            bind:dose
-            bind:unit
-            bind:color
-            bind:pop
-            bind:farmaci
-            {colors}
-          />
-        {/if}
+          {#if pop}
+            <AddFarmaco bind:pop bind:farmaci />
+          {/if}
+        </div>
       </div>
       <div class="col-span-3">
         {#each { length: rows + 1 } as _, i}
@@ -107,7 +70,7 @@
                 <p class="font-bold text-black text-sm">{alf[i]}</p>
               </div>
 
-              {#each { length: cols } as _, j}
+              {#each { length: cols } as _}
                 <Pot {farmaci} />
               {/each}
             {/if}
@@ -116,16 +79,5 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-1 justify-items-center p-12">
-    <div class="grid grid-cols-2">
-      <div>
-        <label for="">Rows : </label>
-        <input type="number" min="1" max="12" bind:value={rows} />
-      </div>
-      <div>
-        <label for="">Columns : </label>
-        <input type="number" min="1" max="12" bind:value={cols} />
-      </div>
-    </div>
-  </div>
+  <Footer bind:rows bind:cols />
 </div>

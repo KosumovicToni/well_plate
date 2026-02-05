@@ -15,7 +15,7 @@
       {dose}
     </p>
   </div>
-  <div class="min-w-0 max-w-64 flex-1">
+  <div class="min-w-0 flex-1">
     <p class="text-wrap break-words leading-tight text-gray-800">
       {unit}
     </p>

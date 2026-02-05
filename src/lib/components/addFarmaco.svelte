@@ -1,18 +1,17 @@
 <script lang="ts">
   import Color from "./Color.svelte";
 
-  let {
-    name = $bindable(),
-    dose = $bindable(),
-    unit = $bindable(),
-    color = $bindable(),
-    pop = $bindable(),
-    farmaci = $bindable(),
-    colors,
-  } = $props();
+  let { pop = $bindable(), farmaci = $bindable() } = $props();
+
+  let colors: string[] = ["red", "blue", "green", "orange", "purple", "brown"];
+  let name: string = $state("");
+  let color: string = $state(colors[0]);
+  let dose: number | undefined = $state();
+  let unit: string = $state("uM");
 
   function addFarmaco() {
-    farmaci.push({ name, dose: 1, unit, color });
+    if (typeof dose == "undefined") dose = 1;
+    farmaci.push({ name, dose, unit, color });
     name = "";
     dose = undefined;
     unit = "uM";
@@ -25,7 +24,7 @@
 </script>
 
 <div
-  class="absolute z-10 bg-white border-2 rounded-lg w-auto mt-2 h-auto p-2 grid grid-cols-1 justify-center"
+  class="absolute top-6 -inset-x-36 z-10 bg-white border-2 rounded-lg w-94 mt-2 h-auto p-2 grid grid-cols-1 justify-center"
 >
   <div class="flex justifly-between text-start">
     <label for="">Farmaco : </label>
@@ -58,7 +57,7 @@
     </div>
   </div>
   <button
-    class="font-bold rounded-lg border-2 w-20 mt-2 transition duration-500"
+    class="mx-auto font-bold rounded-lg border-2 w-20 mt-2 transition duration-500"
     style="opacity: {name.length == 0 || color.length == 0 ? '0.5' : '1'}"
     disabled={name.length == 0 || color.length == 0}
     onclick={() => {
