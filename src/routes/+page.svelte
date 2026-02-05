@@ -1,45 +1,54 @@
 <script lang="ts">
   import Pot from "$lib/components/Pot.svelte";
   import Farmaco from "$lib/components/Farmaco.svelte";
-  import Color from "$lib/components/Color.svelte";
+  import AddFarmaco from "$lib/components/addFarmaco.svelte";
 
   let rows = $state(8);
   let cols = $state(12);
 
   type farmaco = {
-    name: string | null;
-    dose: number | null;
-    color: string | null;
+    name: string;
+    dose: number;
+    unit: string;
+    color: string;
   };
 
   const alf = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
 
   let pop: boolean = $state(false);
   let farmaci: farmaco[] = $state([]);
-  let colors: string[] = ["red","blue","green","orange","purple","brown"]
+  let colors: string[] = ["red", "blue", "green", "orange", "purple", "brown"];
 
   let name: string = $state("");
   let color: string = $state(colors[0]);
-  let dose: number = $state(0);
-
-  function addFarmaco() {
-    farmaci.push({ name, dose, color });
-    name = "";
-    color = colors[0];
-  };
-  const handleSelect = (col: string) => {
-    color = col;
-  };
+  let dose: number | undefined = $state();
+  let unit: string = $state("uM");
 </script>
 
 <div class="flex flex-col w-screen h-screen">
   <div class="flex justify-between">
     <h1 class="p-2 text-2xl font-bold">weel-plate</h1>
-    <button aria-label="pdf" class="rounded-lg border-2 m-2 hover:bg-gray-50 transition-all" onclick={()=>{console.log("pdf printing")}}>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-</svg>
-
+    <button
+      aria-label="pdf"
+      class="rounded-lg border-2 m-2 hover:bg-gray-50 transition-all"
+      onclick={() => {
+        console.log("pdf printing");
+      }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+        />
+      </svg>
     </button>
   </div>
   <div
@@ -55,6 +64,7 @@
           <Farmaco
             name={farmaco.name}
             dose={farmaco.dose}
+            unit={farmaco.unit}
             color={farmaco.color}
           />
         {/each}
@@ -67,47 +77,15 @@
         >
 
         {#if pop}
-          <div
-            class="absolute z-10 bg-white border-2 rounded-lg w-auto mt-2 h-auto p-2 grid grid-cols-1 justify-center"
-          >
-            <div class="flex justifly-between text-start">
-              <label for="">Farmaco : </label>
-              <input type="text" class="border-b-1 text-center" bind:value={name} />
-            </div>
-            <div class="flex justifly-between text-start">
-              <label for="">Dose : </label>
-              <input type="nuber" class="border-b-1 text-center" bind:value={dose} />
-            </div>
-            <div class="flex w-full items-center justify-start mt-2">
-              <label for="color-dropdown" class="flex font-bold">
-                Color:
-              </label>
-                <div
-                  class="grid grid-cols-6 item-center"
-                >
-                  {#each colors as col}
-                    <button
-                      type="button"
-                      onclick={() => handleSelect(col)}
-                      class="flex items-center w-full px-2 py-1"
-                    >
-                      <Color selected={color==col} color={col} />         
-                    </button>
-                  {/each}
-                </div>
-            </div>
-            <button
-              class="font-bold rounded-lg border-2 w-20 mt-2 transition duration-500"
-              style="opacity: {name.length == 0 || color.length == 0
-                ? '0.5'
-                : '1'}"
-              disabled={name.length == 0 || color.length == 0}
-              onclick={() => {
-                addFarmaco();
-                pop = !pop;
-              }}>add</button
-            >
-          </div>
+          <AddFarmaco
+            bind:name
+            bind:dose
+            bind:unit
+            bind:color
+            bind:pop
+            bind:farmaci
+            {colors}
+          />
         {/if}
       </div>
       <div class="col-span-3">
@@ -151,10 +129,3 @@
     </div>
   </div>
 </div>
-
-
-<style>
-  input:focus {
-    outline: none;
-  }
-</style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  let { name, dose, color } = $props();
+  let { name, dose, unit, color } = $props();
 </script>
 
 <div
@@ -13,6 +13,11 @@
   <div class="min-w-0 max-w-64 flex-1">
     <p class="text-wrap break-words leading-tight text-gray-800">
       {dose}
+    </p>
+  </div>
+  <div class="min-w-0 max-w-64 flex-1">
+    <p class="text-wrap break-words leading-tight text-gray-800">
+      {unit}
     </p>
   </div>
   <div

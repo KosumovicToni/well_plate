@@ -18,18 +18,20 @@
       hidden = !hidden;
     }}
   >
-  <div class="relative h-full w-full flex items-center justify-center rounded-full overflow-hidden">
-    <div 
-      class="absolute inset-0 z-0" 
-      style="background-color: {color}; opacity: {typeof ref_dose !==
+    <div
+      class="relative h-full w-full flex items-center justify-center rounded-full overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 z-0"
+        style="background-color: {color}; opacity: {typeof ref_dose !==
         'undefined'
           ? dose! / ref_dose
           : 100}"
-    ></div>
+      ></div>
 
-    <div class="relative z-10 font-bold text-center pointer-events-none">
-      <p class="text-wrap break-words leading-tight max-w-10">{dose}</p>
-    </div>
+      <div class="relative z-10 font-bold text-center pointer-events-none">
+        <p class="text-wrap break-words leading-tight max-w-10">{dose}</p>
+      </div>
     </div>
   </button>
 
