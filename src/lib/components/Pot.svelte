@@ -6,12 +6,15 @@
   let ref_dose: number | undefined = $state();
   let ref_unit: string = $state("uM");
 
-  let hidden = $state(true);
-  let selected:
-    | { name: string; dose: number; unit: string; color: string }
-    | undefined = $state();
+  let active = $state(false);
 
-  let { farmaci } = $props();
+  let {
+    submit = $bindable(),
+    reset = $bindable(),
+    selected,
+    hidden = $bindable(),
+    count = $bindable(),
+  } = $props();
 
   function getPower(p_unit: string) {
     switch (p_unit) {
@@ -24,14 +27,43 @@
     }
     return Math.pow(10, -3);
   }
+
+  function changeState() {
+    active = false;
+    count--;
+    color = selected.color;
+    dose = selected.dose;
+    unit = selected.unit;
+    ref_unit = selected.ref_unit;
+    ref_dose = selected.ref_dose;
+    if (count == 0) submit = false;
+  }
+
+  function deactivate() {
+    active = false;
+    count--;
+    if (count == 0) reset = false;
+  }
+
+  $effect(() => {
+    if (active && submit) changeState();
+    else if (reset && active) deactivate();
+  });
 </script>
 
 <div class="relative">
   <button
     aria-label="pot"
     class="rounded-full h-11 w-11 lg:h-16 lg:w-16 md:h-14 md:w-14 border-3"
+    style="border-color: {active ? '#0097D9' : 'black'}"
     onclick={() => {
-      hidden = !hidden;
+      if (count == 0) hidden = !hidden;
+
+      active = !active;
+      if (active) count++;
+      else count--;
+
+      if (count == 0) hidden = !hidden;
     }}
   >
     <div
@@ -57,51 +89,4 @@
       </div>
     </div>
   </button>
-
-  {#if !hidden}
-    <div
-      class="absolute flex flex-col w-60 z-20 bg-white border-2 rounded-lg h-auto p-2 font-bold justify-center"
-    >
-      <div class="flex flex-row justify-center gap-x-3">
-        <label for="">Farmaco : </label>
-        <select
-          bind:value={selected}
-          onchange={() => {
-            color = selected?.color;
-            ref_dose = selected!.dose;
-            ref_unit = selected!.unit;
-          }}
-          name="farmaco"
-          id="farmaco"
-        >
-          {#each farmaci as farmaco}
-            <option value={farmaco}>{farmaco.name}</option>
-          {/each}
-          <option value={undefined}>empty</option>
-        </select>
-      </div>
-      <div class="flex flex-row justify-center">
-        <label for="dose" class="inline-block">Dose : </label>
-        <div class="flex flex-row justify-between w-2/3 gap-x-1">
-          <input
-            type="text"
-            class="w-1/2 border-b-1 text-center"
-            bind:value={dose}
-          />
-          <select name="unit" id="unit" bind:value={unit} class="w-1/2">
-            <option value="uM">uM</option>
-            <option value="nM">nM</option>
-            <option value="ug/mL">ug/mL</option>
-            <option value="other">other</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  {/if}
 </div>
-
-<style>
-  input:focus {
-    outline: none;
-  }
-</style>

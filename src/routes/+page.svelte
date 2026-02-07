@@ -18,7 +18,33 @@
   const alf = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
 
   let pop: boolean = $state(false);
+  let hidden: boolean = $state(true);
+  let a_count: number = $state(0);
   let farmaci: farmaco[] = $state([]);
+  let submit: boolean = $state(false);
+  let reset: boolean = $state(false);
+
+  let color: string | undefined = $state("white");
+  let dose: number | undefined = $state();
+  let unit: string = $state("uM");
+
+  let ref_dose: number | undefined = $state();
+  let ref_unit: string = $state("uM");
+
+  let selected:
+    | { name: string; dose: number; unit: string; color: string }
+    | undefined = $state();
+
+  $effect(() => {
+    if ((!submit || !reset) && a_count == 0) {
+      color = "white";
+      dose = undefined;
+      ref_dose = undefined;
+      ref_unit = "uM";
+      unit = "uM";
+      selected = undefined;
+    }
+  });
 </script>
 
 <div class="flex flex-col w-screen h-screen">
@@ -75,12 +101,76 @@
             </div>
 
             {#each { length: cols } as _}
-              <Pot {farmaci} />
+              <Pot
+                bind:submit
+                bind:reset
+                selected={{ color, dose, unit, ref_unit, ref_dose }}
+                bind:hidden
+                bind:count={a_count}
+              />
             {/each}
           {/if}
         </div>
       {/each}
     </div>
+    {#if !hidden}
+      <div
+        class="absolute inset-x-0 top-0 flex flex-col items center w-60 z-20 h-auto p-2 font-bold justify-center"
+      >
+        <div class="bg-white border-2 py-2 rounded-lg">
+          <div class="flex flex-row justify-center gap-x-3">
+            <label for="">Farmaco : </label>
+            <select
+              bind:value={selected}
+              onchange={() => {
+                color = selected?.color;
+                ref_dose = selected!.dose;
+                ref_unit = selected!.unit;
+              }}
+              name="farmaco"
+              id="farmaco"
+            >
+              {#each farmaci as farmaco}
+                <option value={farmaco}>{farmaco.name}</option>
+              {/each}
+              <option value={undefined}>empty</option>
+            </select>
+          </div>
+          <div class="flex flex-row justify-center">
+            <label for="dose" class="inline-block">Dose : </label>
+            <div class="flex flex-row justify-between w-2/3 gap-x-1">
+              <input
+                type="text"
+                class="w-1/2 border-b-1 text-center"
+                bind:value={dose}
+              />
+              <select name="unit" id="unit" bind:value={unit} class="w-1/2">
+                <option value="uM">uM</option>
+                <option value="nM">nM</option>
+                <option value="ug/mL">ug/mL</option>
+                <option value="other">other</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex w-full justify-center gap-x-2">
+            <button
+              class="rounded-lg text-center text-white mt-2 p-1 bg-red-600"
+              onclick={() => {
+                hidden = true;
+                reset = true;
+              }}>cancel</button
+            >
+            <button
+              class="rounded-lg text-center text-white bg-sky-600 mt-2 p-1"
+              onclick={() => {
+                hidden = true;
+                submit = true;
+              }}>aplly</button
+            >
+          </div>
+        </div>
+      </div>
+    {/if}
   </div>
   <Footer bind:rows bind:cols />
 </div>
