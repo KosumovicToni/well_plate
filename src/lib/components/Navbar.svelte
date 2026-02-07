@@ -1,14 +1,15 @@
-<script lang="ts">
-  let {print = $bindable()} = $props();
-</script>
+<script lang="ts"></script>
 
-<div class="flex justify-between">
-  <h1 class="p-2 text-2xl font-bold">weel-plate</h1>
+<div class="print:hidden flex justify-between">
+  <h1 class="p-2 text-2xl font-bold">well-plate</h1>
   <button
     aria-label="pdf"
-    class="rounded-lg border-2 m-2 hover:bg-gray-50 transition-all"
+    class=" rounded-lg border-2 m-2 hover:bg-gray-50 transition-all"
     onclick={() => {
-      print = true;
+      const originalTitle = document.title;
+      document.title = "well-plate" + new Date().getTime();
+      window.print();
+      document.title = originalTitle;
     }}
   >
     <svg

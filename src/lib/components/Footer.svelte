@@ -2,7 +2,7 @@
   let { rows = $bindable(), cols = $bindable() } = $props();
 </script>
 
-<div class="grid grid-cols-1 justify-items-center p-12">
+<div class="print:hidden grid grid-cols-1 justify-items-center p-12">
   <div class="grid grid-cols-2">
     <div>
       <label for="">Rows : </label>

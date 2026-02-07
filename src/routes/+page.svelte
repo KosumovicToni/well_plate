@@ -31,12 +31,9 @@
   let ref_dose: number | undefined = $state();
   let ref_unit: string = $state("uM");
 
-  let print:boolean = $state(false);
-
   let selected:
     | { name: string; dose: number; unit: string; color: string }
     | undefined = $state();
-
 
   $effect(() => {
     if ((!submit || !reset) && a_count == 0) {
@@ -48,46 +45,15 @@
       selected = undefined;
     }
   });
-
-  //pdf printing
-  import { onMount } from 'svelte';
-  import { browser } from '$app/environment';
-
-  let html2pdf: any;
-
-  onMount(async () => {
-    // Carichiamo la libreria solo se siamo nel browser
-    if (browser) {
-      const module = await import('html2pdf.js');
-      // Alcune versioni richiedono .default, altre no
-      html2pdf = module.default || module;
-    }
-  });
-
-  $effect(()=>{
-    if(print){
-      let well_plate = document.getElementById('well-plate');
-      let copy_w = well_plate?.cloneNode(true);
-      let legend = document.getElementById('legend');
-      let copy_l = legend?.cloneNode(true);
-      let element = document.createElement('pdf');
-
-      element.appendChild(copy_l!);
-      element.appendChild(copy_w!);
-
-      html2pdf().from(element).save();
-      print = false;
-    }
-  })
 </script>
 
 <div class="flex flex-col w-screen h-screen">
-  <Navbar bind:print={print} />
+  <Navbar />
   <div class="flex flex-col md:flex-row lg:flex-row h-screen w-screen bg-white">
     <div
       class="flex flex-col grow text-center my-auto font-bold lg:ml-auto my-5"
     >
-      <h1 class="text-3xl mb-2">Legend</h1>
+      <h1 class="print:hidden text-3xl mb-2">Legend</h1>
       <div id="legend" class="flex flex-col w-full items-center">
         {#each farmaci as farmaco}
           <Farmaco
@@ -100,7 +66,7 @@
       </div>
       <div class="relative flex flex-col items-center">
         <button
-          class="font-bold rounded-lg border-2 w-20 transition duration-500 opacity-60 hover:opacity-100"
+          class="print:hidden font-bold rounded-lg border-2 w-20 transition duration-500 opacity-60 hover:opacity-100"
           onclick={() => {
             pop = !pop;
           }}>+</button
@@ -149,7 +115,7 @@
     </div>
     {#if !hidden}
       <div
-        class="absolute inset-x-0 top-0 flex flex-col items center w-60 z-20 h-auto p-2 font-bold justify-center"
+        class="print:hidden absolute inset-x-0 top-0 flex flex-col items center w-60 z-20 h-auto p-2 font-bold justify-center"
       >
         <div class="bg-white border-2 py-2 rounded-lg">
           <div class="flex flex-row justify-center gap-x-3">
@@ -205,7 +171,7 @@
               onclick={() => {
                 hidden = true;
                 submit = true;
-              }}>aplly</button
+              }}>apply</button
             >
           </div>
         </div>
@@ -214,3 +180,22 @@
   </div>
   <Footer bind:rows bind:cols />
 </div>
+
+<style>
+  @media print {
+    @page {
+      size: landscape;
+    }
+
+    #well-plate {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    #legend {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>

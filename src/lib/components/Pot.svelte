@@ -54,7 +54,7 @@
 <div class="relative">
   <button
     aria-label="pot"
-    class="rounded-full h-11 w-11 lg:h-16 lg:w-16 md:h-14 md:w-14 border-3"
+    class="rounded-full h-11 w-11 lg:h-16 lg:w-16 md:h-14 md:w-14 border-3 print:border-black!"
     style="border-color: {active ? '#0097D9' : 'black'}"
     onclick={() => {
       if (count == 0) hidden = !hidden;
