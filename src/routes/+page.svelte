@@ -31,9 +31,12 @@
   let ref_dose: number | undefined = $state();
   let ref_unit: string = $state("uM");
 
+  let print:boolean = $state(false);
+
   let selected:
     | { name: string; dose: number; unit: string; color: string }
     | undefined = $state();
+
 
   $effect(() => {
     if ((!submit || !reset) && a_count == 0) {
@@ -45,16 +48,47 @@
       selected = undefined;
     }
   });
+
+  //pdf printing
+  import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
+
+  let html2pdf: any;
+
+  onMount(async () => {
+    // Carichiamo la libreria solo se siamo nel browser
+    if (browser) {
+      const module = await import('html2pdf.js');
+      // Alcune versioni richiedono .default, altre no
+      html2pdf = module.default || module;
+    }
+  });
+
+  $effect(()=>{
+    if(print){
+      let well_plate = document.getElementById('well-plate');
+      let copy_w = well_plate?.cloneNode(true);
+      let legend = document.getElementById('legend');
+      let copy_l = legend?.cloneNode(true);
+      let element = document.createElement('pdf');
+
+      element.appendChild(copy_l!);
+      element.appendChild(copy_w!);
+
+      html2pdf().from(element).save();
+      print = false;
+    }
+  })
 </script>
 
 <div class="flex flex-col w-screen h-screen">
-  <Navbar />
+  <Navbar bind:print={print} />
   <div class="flex flex-col md:flex-row lg:flex-row h-screen w-screen bg-white">
     <div
       class="flex flex-col grow text-center my-auto font-bold lg:ml-auto my-5"
     >
       <h1 class="text-3xl mb-2">Legend</h1>
-      <div class="flex flex-col w-full items-center">
+      <div id="legend" class="flex flex-col w-full items-center">
         {#each farmaci as farmaco}
           <Farmaco
             name={farmaco.name}
@@ -77,7 +111,7 @@
         {/if}
       </div>
     </div>
-    <div class="flex flex-col my-auto grow">
+    <div id="well-plate" class="flex flex-col my-auto grow">
       {#each { length: rows + 1 } as _, i}
         <div
           class="grid justify-items-center gap-7 p-2"

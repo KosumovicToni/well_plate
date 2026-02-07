@@ -1,10 +1,14 @@
+<script lang="ts">
+  let {print = $bindable()} = $props();
+</script>
+
 <div class="flex justify-between">
   <h1 class="p-2 text-2xl font-bold">weel-plate</h1>
   <button
     aria-label="pdf"
     class="rounded-lg border-2 m-2 hover:bg-gray-50 transition-all"
     onclick={() => {
-      console.log("pdf printing");
+      print = true;
     }}
   >
     <svg
