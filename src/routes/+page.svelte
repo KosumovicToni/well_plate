@@ -162,6 +162,12 @@
             >
             <button
               class="rounded-lg text-center text-white bg-sky-600 mt-2 p-1"
+              disabled={typeof selected == "undefined" ||
+                typeof dose == "undefined"}
+              style="opacity: {typeof selected == 'undefined' ||
+              typeof dose == 'undefined'
+                ? '0.5'
+                : '1'}"
               onclick={() => {
                 hidden = true;
                 submit = true;

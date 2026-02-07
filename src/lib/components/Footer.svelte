@@ -6,7 +6,7 @@
   <div class="grid grid-cols-2">
     <div>
       <label for="">Rows : </label>
-      <input type="number" min="1" max="12" bind:value={rows} />
+      <input type="number" min="1" max="9" bind:value={rows} />
     </div>
     <div>
       <label for="">Columns : </label>
