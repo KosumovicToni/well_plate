@@ -5,8 +5,8 @@
   import Farmaco from "$lib/components/Farmaco.svelte";
   import AddFarmaco from "$lib/components/addFarmaco.svelte";
 
-  let rows = $state(6);
-  let cols = $state(8);
+  let rows = $state(8);
+  let cols = $state(12);
 
   type farmaco = {
     name: string;
@@ -15,7 +15,23 @@
     color: string;
   };
 
-  const alf = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+  const alf = [
+    "",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+  ];
 
   let pop: boolean = $state(false);
   let hidden: boolean = $state(true);
@@ -77,7 +93,7 @@
         {/if}
       </div>
     </div>
-    <div id="well-plate" class="flex flex-col my-auto grow">
+    <div id="well-plate" class="flex flex-col my-auto grow snap-x">
       {#each { length: rows + 1 } as _, i}
         <div
           class="grid justify-items-center gap-7 p-2"
