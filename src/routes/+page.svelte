@@ -47,20 +47,12 @@
   let ref_dose: number | undefined = $state();
   let ref_unit: string = $state("uM");
 
+  const empty: { name: string; dose: undefined; unit: string; color: string } =
+    { name: "empty", dose: undefined, unit: "uM", color: "white" };
+
   let selected:
     | { name: string; dose: number; unit: string; color: string }
     | undefined = $state();
-
-  $effect(() => {
-    if ((!submit || !reset) && a_count == 0) {
-      color = "white";
-      dose = undefined;
-      ref_dose = undefined;
-      ref_unit = "uM";
-      unit = "uM";
-      selected = undefined;
-    }
-  });
 </script>
 
 <div class="flex flex-col w-screen h-screen">
@@ -96,7 +88,7 @@
     <div id="well-plate" class="flex flex-col my-auto grow snap-x">
       {#each { length: rows + 1 } as _, i}
         <div
-          class="grid justify-items-center gap-7 p-2"
+          class="grid justify-items-center lg:gap-7 gap-5 lg:p-2 p-1"
           style="grid-template-columns: repeat({cols + 1}, minmax(0, 40px));"
         >
           {#if i === 0}
@@ -104,14 +96,14 @@
 
             {#each { length: cols } as _, j}
               <div
-                class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-12 md:w-12"
+                class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-13 md:w-13"
               >
                 <p class="font-bold text-black text-sm">{j + 1}</p>
               </div>
             {/each}
           {:else}
             <div
-              class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-12 md:w-12"
+              class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-13 md:w-13"
             >
               <p class="font-bold text-black text-sm">{alf[i]}</p>
             </div>
@@ -132,11 +124,11 @@
     </div>
     {#if !hidden}
       <div
-        class="print:hidden absolute inset-x-0 top-0 flex flex-col items center w-60 z-20 h-auto p-2 font-bold justify-center"
+        class="print:hidden absolute top-0 flex flex-col items-center w-full z-20 h-auto p-2 font-bold justify-center"
       >
-        <div class="bg-white border-2 py-2 rounded-lg">
+        <div class="bg-white border-2 py-2 rounded-lg w-60">
           <div class="flex flex-row justify-center gap-x-3">
-            <label for="">Farmaco : </label>
+            <label for="">Reagent : </label>
             <select
               bind:value={selected}
               onchange={() => {
@@ -150,11 +142,11 @@
               {#each farmaci as farmaco}
                 <option value={farmaco}>{farmaco.name}</option>
               {/each}
-              <option value={{name:"empty"}}>empty</option>
+              <option value={empty}>{empty.name}</option>
             </select>
           </div>
           <div class="flex flex-row justify-center">
-            <label for="dose" class="inline-block">Dose : </label>
+            <label for="dose" class="inline-block">[C] : </label>
             <div class="flex flex-row justify-between w-2/3 gap-x-1">
               <input
                 type="text"
@@ -180,9 +172,9 @@
             <button
               class="rounded-lg text-center text-white bg-sky-600 mt-2 p-1"
               disabled={typeof selected == "undefined" ||
-                typeof dose == "undefined" && selected.name != "empty"}
+                (typeof dose == "undefined" && selected.name != "empty")}
               style="opacity: {typeof selected == 'undefined' ||
-              typeof dose == 'undefined' && selected.name != "empty"
+              (typeof dose == 'undefined' && selected.name != 'empty')
                 ? '0.5'
                 : '1'}"
               onclick={() => {

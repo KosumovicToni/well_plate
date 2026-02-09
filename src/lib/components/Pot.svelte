@@ -37,7 +37,7 @@
 
     color = selected.color;
 
-    if(name == "empty"){
+    if (name == "empty") {
       dose = undefined;
       ref_dose = undefined;
     } else {
@@ -46,7 +46,6 @@
       ref_unit = selected.ref_unit;
       ref_dose = selected.ref_dose;
     }
-
   }
 
   function deactivate() {
@@ -64,7 +63,7 @@
 <div class="relative">
   <button
     aria-label="pot"
-    class="rounded-full h-7 w-7 lg:h-16 lg:w-16 md:h-14 md:w-14 border-3 print:border-black!"
+    class="rounded-full h-7 w-7 lg:h-15 lg:w-15 md:h-13 md:w-13 border-3 print:border-black!"
     style="border-color: {active ? '#0097D9' : 'black'}"
     onclick={() => {
       if (count == 0) hidden = !hidden;

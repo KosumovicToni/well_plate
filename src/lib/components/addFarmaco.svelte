@@ -27,11 +27,11 @@
   class="absolute top-6 z-10 bg-white border-2 rounded-lg w-94 mt-2 h-auto p-2 grid grid-cols-1 justify-center"
 >
   <div class="flex justifly-between text-start">
-    <label for="">Farmaco : </label>
+    <label for="">Reagent : </label>
     <input type="text" class="border-b-1 text-center" bind:value={name} />
   </div>
   <div class="flex justifly-between text-start">
-    <label for="">Dose : </label>
+    <label for="">max[C] : </label>
     <div class="flex flex-row">
       <input type="text" class="border-b-1 text-center" bind:value={dose} />
       <select name="unit" id="unit" bind:value={unit}>
@@ -43,7 +43,7 @@
     </div>
   </div>
   <div class="flex w-full items-center justify-start mt-2">
-    <label for="color-dropdown" class="flex font-bold"> Color: </label>
+    <label for="color-dropdown" class="flex font-bold"> Color : </label>
     <div class="grid grid-cols-6 item-center">
       {#each colors as col}
         <button
