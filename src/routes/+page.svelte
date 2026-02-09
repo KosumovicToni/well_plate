@@ -68,7 +68,7 @@
     >
       <h1 class="print:hidden text-3xl mb-2">Legend</h1>
       <div id="legend" class="flex flex-col w-full items-center p-12">
-        <div class="flex flex-col xl:flex-row w-full xl:w-[700px]">
+        <div class="flex flex-col items-center xl:flex-row w-full xl:w-[700px]">
           {#each defaults as def}
             <Farmaco
               name={def.name}
@@ -78,14 +78,18 @@
             />
           {/each}
         </div>
-        {#each farmaci as farmaco}
-          <Farmaco
-            name={farmaco.name}
-            dose={farmaco.dose}
-            unit={farmaco.unit}
-            bind:color={farmaco.color}
-          />
-        {/each}
+        <div
+          class="print:px-[0px] flex flex-col w-full max-w-[700px] lg:px-[5px] items-center"
+        >
+          {#each farmaci as farmaco}
+            <Farmaco
+              name={farmaco.name}
+              dose={farmaco.dose}
+              unit={farmaco.unit}
+              bind:color={farmaco.color}
+            />
+          {/each}
+        </div>
       </div>
       <div class="relative flex flex-col items-center">
         <button
@@ -219,7 +223,7 @@
     #well-plate {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
-      zoom: 0.7;
+      zoom: 0.8;
     }
     #legend {
       -webkit-print-color-adjust: exact !important;

@@ -37,9 +37,9 @@
     if (count == 0) submit = false;
 
     color = selected.color;
+    pot_name = name;
 
     if (["empty", "NT", "Blank"].includes(name)) {
-      pot_name = name;
       dose = undefined;
       ref_dose = undefined;
     } else {
@@ -62,7 +62,7 @@
   });
 </script>
 
-<div class="relative">
+<div id="pot" class="relative">
   <button
     aria-label="pot"
     class="rounded-full h-7 w-7 lg:h-15 lg:w-15 md:h-13 md:w-13 border-3 print:border-black!"

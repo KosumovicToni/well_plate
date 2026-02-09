@@ -3,6 +3,7 @@
 </script>
 
 <div
+  id="farmaco"
   class="flex flex-row items-center justify-between p-3 m-1 border-2 rounded-lg font-bold bg-white w-full lg:max-w-[700px] gap-2 text-xl"
 >
   <div class="min-w-0 lg:max-w-12s0 flex-1">
@@ -25,3 +26,11 @@
     style="background-color: {color}"
   ></div>
 </div>
+
+<style>
+  @media print {
+    #farmaco {
+      zoom: 0.8;
+    }
+  }
+</style>

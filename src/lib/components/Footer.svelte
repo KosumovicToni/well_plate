@@ -21,8 +21,8 @@
         return;
 
       case "p-24":
-        rows = 6;
-        cols = 4;
+        rows = 4;
+        cols = 6;
         return;
 
       case "p-12":
