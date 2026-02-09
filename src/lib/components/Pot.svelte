@@ -2,6 +2,7 @@
   let color: string | undefined = $state("white");
   let dose: number | undefined = $state();
   let unit: string = $state("uM");
+  let pot_name: string = $state("");
 
   let ref_dose: number | undefined = $state();
   let ref_unit: string = $state("uM");
@@ -37,7 +38,8 @@
 
     color = selected.color;
 
-    if (name == "empty") {
+    if (["empty", "NT", "Blank"].includes(name)) {
+      pot_name = name;
       dose = undefined;
       ref_dose = undefined;
     } else {
@@ -89,12 +91,18 @@
       <div
         class="relative z-10 flex flex-col font-bold text-center pointer-events-none"
       >
-        <p class="text-wrap break-words leading-tight max-w-10">
-          {dose}
-          {#if typeof dose !== "undefined"}
-            <span class="text-xs">{unit}</span>
-          {/if}
-        </p>
+        {#if ["NT", "Blank"].includes(pot_name)}
+          <p class="text-wrap break-words leading-tight max-w-10 text-sm">
+            {pot_name}
+          </p>
+        {:else}
+          <p class="text-wrap break-words leading-tight max-w-10">
+            {dose}
+            {#if typeof dose !== "undefined"}
+              <span class="text-xs">{unit}</span>
+            {/if}
+          </p>
+        {/if}
       </div>
     </div>
   </button>

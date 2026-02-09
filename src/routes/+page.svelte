@@ -33,10 +33,15 @@
     "N",
   ];
 
+  let farmaci: farmaco[] = $state([]);
+  let defaults: { name: string; color: string }[] = $state([
+    { name: "Blank", color: "white" },
+    { name: "NT", color: "white" },
+  ]);
+
   let pop: boolean = $state(false);
   let hidden: boolean = $state(true);
   let a_count: number = $state(0);
-  let farmaci: farmaco[] = $state([]);
   let submit: boolean = $state(false);
   let reset: boolean = $state(false);
 
@@ -62,13 +67,23 @@
       class="flex flex-col grow text-center my-auto font-bold lg:ml-auto my-5"
     >
       <h1 class="print:hidden text-3xl mb-2">Legend</h1>
-      <div id="legend" class="flex flex-col w-full items-center">
+      <div id="legend" class="flex flex-col w-full items-center p-12">
+        <div class="flex flex-col xl:flex-row w-full xl:w-[700px]">
+          {#each defaults as def}
+            <Farmaco
+              name={def.name}
+              dose={undefined}
+              unit={undefined}
+              bind:color={def.color}
+            />
+          {/each}
+        </div>
         {#each farmaci as farmaco}
           <Farmaco
             name={farmaco.name}
             dose={farmaco.dose}
             unit={farmaco.unit}
-            color={farmaco.color}
+            bind:color={farmaco.color}
           />
         {/each}
       </div>
@@ -126,7 +141,7 @@
       <div
         class="print:hidden absolute top-0 flex flex-col items-center w-full z-20 h-auto p-2 font-bold justify-center"
       >
-        <div class="bg-white border-2 py-2 rounded-lg w-60">
+        <div class="bg-white border-2 py-2 rounded-lg w-70">
           <div class="flex flex-row justify-center gap-x-3">
             <label for="">Reagent : </label>
             <select
@@ -141,6 +156,9 @@
             >
               {#each farmaci as farmaco}
                 <option value={farmaco}>{farmaco.name}</option>
+              {/each}
+              {#each defaults as def}
+                <option value={def}>{def.name}</option>
               {/each}
               <option value={empty}>{empty.name}</option>
             </select>
@@ -172,9 +190,11 @@
             <button
               class="rounded-lg text-center text-white bg-sky-600 mt-2 p-1"
               disabled={typeof selected == "undefined" ||
-                (typeof dose == "undefined" && selected.name != "empty")}
+                (typeof dose == "undefined" &&
+                  !["empty", "NT", "Blank"].includes(selected.name))}
               style="opacity: {typeof selected == 'undefined' ||
-              (typeof dose == 'undefined' && selected.name != 'empty')
+              (typeof dose == 'undefined' &&
+                !['empty', 'NT', 'Blank'].includes(selected.name))
                 ? '0.5'
                 : '1'}"
               onclick={() => {
@@ -199,12 +219,12 @@
     #well-plate {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
-      page-break-inside: avoid;
-      break-inside: avoid;
+      zoom: 0.7;
     }
     #legend {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
+      zoom: 0.8;
     }
   }
 </style>
