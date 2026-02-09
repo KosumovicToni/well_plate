@@ -38,28 +38,36 @@
   }
 </script>
 
-<div class="print:hidden grid grid-cols-1 justify-items-center p-12">
-  <div class="flex flex-row justify-center items-center gap-x-3">
-    <div>
-      <label for="p-type"></label>
-      <select
-        bind:value={selected}
-        onchange={() => {
-          changeDim();
-        }}
-      >
-        {#each ps as p}
-          <option value={p}>{p}</option>
-        {/each}
-      </select>
-    </div>
-    <div>
-      <label for="">Rows : </label>
-      <input type="number" min="1" max="9" bind:value={rows} />
-    </div>
-    <div>
-      <label for="">Columns : </label>
-      <input type="number" min="1" max="12" bind:value={cols} />
+<div
+  class="print:hidden flex flex-row w-full items-center justify-between py-12"
+>
+  <div class="flex text-center w-1/2 items-center justify-center">
+    <p class="text-sm">© well-plate 2026</p>
+  </div>
+
+  <div class="flex w-1/2 items-center justify-center">
+    <div class="flex flex-row justify-center items-center gap-x-4">
+      <div>
+        <label for="p-type"></label>
+        <select
+          bind:value={selected}
+          onchange={() => {
+            changeDim();
+          }}
+        >
+          {#each ps as p}
+            <option value={p}>{p}</option>
+          {/each}
+        </select>
+      </div>
+      <div>
+        <label for="">Rows : </label>
+        <input type="number" min="1" max="9" bind:value={rows} />
+      </div>
+      <div>
+        <label for="">Columns : </label>
+        <input type="number" min="1" max="12" bind:value={cols} />
+      </div>
     </div>
   </div>
 </div>
