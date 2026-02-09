@@ -121,6 +121,7 @@
                 bind:submit
                 bind:reset
                 selected={{ color, dose, unit, ref_unit, ref_dose }}
+                name={selected?.name}
                 bind:hidden
                 bind:count={a_count}
               />
@@ -149,7 +150,7 @@
               {#each farmaci as farmaco}
                 <option value={farmaco}>{farmaco.name}</option>
               {/each}
-              <option value={undefined}>empty</option>
+              <option value={{name:"empty"}}>empty</option>
             </select>
           </div>
           <div class="flex flex-row justify-center">
@@ -179,9 +180,9 @@
             <button
               class="rounded-lg text-center text-white bg-sky-600 mt-2 p-1"
               disabled={typeof selected == "undefined" ||
-                typeof dose == "undefined"}
+                typeof dose == "undefined" && selected.name != "empty"}
               style="opacity: {typeof selected == 'undefined' ||
-              typeof dose == 'undefined'
+              typeof dose == 'undefined' && selected.name != "empty"
                 ? '0.5'
                 : '1'}"
               onclick={() => {

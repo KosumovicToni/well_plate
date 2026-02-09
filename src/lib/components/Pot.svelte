@@ -12,6 +12,7 @@
     submit = $bindable(),
     reset = $bindable(),
     selected,
+    name,
     hidden = $bindable(),
     count = $bindable(),
   } = $props();
@@ -31,12 +32,21 @@
   function changeState() {
     active = false;
     count--;
-    color = selected.color;
-    dose = selected.dose;
-    unit = selected.unit;
-    ref_unit = selected.ref_unit;
-    ref_dose = selected.ref_dose;
+
     if (count == 0) submit = false;
+
+    color = selected.color;
+
+    if(name == "empty"){
+      dose = undefined;
+      ref_dose = undefined;
+    } else {
+      dose = selected.dose;
+      unit = selected.unit;
+      ref_unit = selected.ref_unit;
+      ref_dose = selected.ref_dose;
+    }
+
   }
 
   function deactivate() {
