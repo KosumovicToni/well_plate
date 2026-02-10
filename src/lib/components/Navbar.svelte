@@ -1,7 +1,7 @@
 <script lang="ts">
   let { rows = $bindable(), cols = $bindable() } = $props();
   let selected: string = $state("96");
-  const ps: string[] = ["384", "96", "48", "24", "12", "6"];
+  const ps: string[] = ["96", "48", "24", "12", "6"];
 
   function changeDim() {
     switch (selected) {

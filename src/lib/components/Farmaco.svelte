@@ -41,7 +41,7 @@
   </button>
   {#if pop}
     <div
-      class="absolute flex items-center justify-center bg-white rounded-lg z-20 inset-y-0 left-0 sm:w-1/2 lg:w-10/12"
+      class="print:hidden absolute flex items-center justify-center bg-white rounded-lg z-20 inset-y-0 left-0 sm:w-1/2 lg:w-10/12"
     >
       {#each colors as col}
         <button
@@ -55,11 +55,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  @media print {
-    #farmaco {
-      zoom: 0.8;
-    }
-  }
-</style>

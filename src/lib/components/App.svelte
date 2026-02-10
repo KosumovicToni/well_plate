@@ -88,7 +88,7 @@
             <Farmaco
               name={farmaci[i + 1].name}
               dose={undefined}
-              unit={farmaci[i + 1].unit}
+              unit={undefined}
               bind:color={farmaci[i + 1].color}
             />
           {/each}
@@ -119,25 +119,25 @@
         {/if}
       </div>
     </div>
-    <div id="well-plate" class="flex flex-col my-auto grow">
+    <div id="well-plate" class="flex flex-col my-auto grow pr-3 print:pr-0!">
       {#each { length: rows + 1 } as _, i}
         <div
-          class="grid justify-items-center lg:gap-7 gap-5 lg:p-2 p-1"
-          style="grid-template-columns: repeat({cols + 1}, minmax(0, 40px));"
+          class="grid justify-items-center py-2 px-1"
+          style="grid-template-columns: repeat({cols + 1}, minmax(0, 80px));"
         >
           {#if i === 0}
-            <div class="w-10"></div>
+            <div class="h-7 w-7 lg:h-15 lg:w-15 md:h-13 md:w-13"></div>
 
             {#each { length: cols } as _, j}
               <div
-                class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-13 md:w-13"
+                class="flex items-center justify-center h-7 w-7 lg:h-15 lg:w-15 md:h-13 md:w-13"
               >
                 <p class="font-bold text-black text-sm">{j + 1}</p>
               </div>
             {/each}
           {:else}
             <div
-              class="flex items-center justify-center h-11 w-11 lg:h-15 lg:w-15 md:h-13 md:w-13"
+              class="flex items-center justify-center h-7 w-7 lg:h-15 lg:w-15 md:h-13 md:w-13"
             >
               <p class="font-bold text-black text-sm">{alf[i]}</p>
             </div>
