@@ -16,6 +16,7 @@
     name,
     hidden = $bindable(),
     count = $bindable(),
+    clear,
   } = $props();
 
   function getPower(p_unit: string) {
@@ -59,6 +60,16 @@
   $effect(() => {
     if (active && submit) changeState();
     else if (reset && active) deactivate();
+  });
+
+  $effect(() => {
+    if (clear) {
+      color = "white";
+      dose = undefined;
+      unit = "uM";
+      ref_dose = undefined;
+      pot_name = "";
+    }
   });
 </script>
 

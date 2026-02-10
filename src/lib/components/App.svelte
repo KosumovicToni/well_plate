@@ -58,10 +58,25 @@
   let selected:
     | { name: string; dose: number; unit: string; color: string }
     | undefined = $state();
+
+  let clearAll = $state(false);
+  let clearPot = $state(false);
+
+  $effect(() => {
+    if (clearPot) clearPot = false;
+  });
+
+  $effect(() => {
+    if (clearAll) {
+      clearAll = false;
+      clearPot = true;
+      farmaci = [];
+    }
+  });
 </script>
 
 <div class="flex flex-col w-screen h-screen">
-  <Navbar />
+  <Navbar bind:rows bind:cols />
   <div class="flex flex-col md:flex-row lg:flex-row h-screen w-screen bg-white">
     <div
       class="flex flex-col grow text-center my-auto font-bold lg:ml-auto my-5"
@@ -104,7 +119,7 @@
         {/if}
       </div>
     </div>
-    <div id="well-plate" class="flex flex-col my-auto grow snap-x">
+    <div id="well-plate" class="flex flex-col my-auto grow">
       {#each { length: rows + 1 } as _, i}
         <div
           class="grid justify-items-center lg:gap-7 gap-5 lg:p-2 p-1"
@@ -135,6 +150,7 @@
                 name={selected?.name}
                 bind:hidden
                 bind:count={a_count}
+                clear={clearPot}
               />
             {/each}
           {/if}
@@ -211,7 +227,7 @@
       </div>
     {/if}
   </div>
-  <Footer bind:rows bind:cols />
+  <Footer bind:clearAll bind:clearPot />
 </div>
 
 <style>

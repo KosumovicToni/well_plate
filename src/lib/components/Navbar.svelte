@@ -1,7 +1,61 @@
-<script lang="ts"></script>
+<script lang="ts">
+  let { rows = $bindable(), cols = $bindable() } = $props();
+  let selected: string = $state("96");
+  const ps: string[] = ["384", "96", "48", "24", "12", "6"];
+
+  function changeDim() {
+    switch (selected) {
+      case "384":
+        rows = 14;
+        cols = 24;
+        return;
+
+      case "96":
+        rows = 8;
+        cols = 12;
+        return;
+
+      case "48":
+        rows = 6;
+        cols = 8;
+        return;
+
+      case "24":
+        rows = 4;
+        cols = 6;
+        return;
+
+      case "12":
+        rows = 3;
+        cols = 4;
+        return;
+
+      case "6":
+        rows = 2;
+        cols = 3;
+        return;
+    }
+  }
+</script>
 
 <div class="print:hidden flex justify-between">
-  <h1 class="p-2 text-2xl font-bold">well-plate</h1>
+  <div class="flex flex-row items-center gap-x-4">
+    <h1 class="p-2 text-2xl font-bold">well-plate</h1>
+    <div class="">
+      <label for="p-type" class="font-bold text-xl">p - </label>
+      <select
+        class="font-bold text-xl"
+        bind:value={selected}
+        onchange={() => {
+          changeDim();
+        }}
+      >
+        {#each ps as p}
+          <option value={p}>{p}</option>
+        {/each}
+      </select>
+    </div>
+  </div>
   <button
     aria-label="pdf"
     class=" rounded-lg border-2 m-2 hover:bg-gray-50 transition-all"
