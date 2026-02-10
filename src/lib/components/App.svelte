@@ -7,8 +7,8 @@
 
   type farmaco = {
     name: string;
-    dose: number;
-    unit: string;
+    dose: number | undefined;
+    unit: string | undefined;
     color: string;
   };
 
@@ -35,10 +35,10 @@
   let rows = $state(8);
   let cols = $state(12);
 
-  let farmaci: farmaco[] = $state([]);
-  let defaults: { name: string; color: string }[] = $state([
-    { name: "Blank", color: "white" },
-    { name: "NT", color: "white" },
+  let farmaci: farmaco[] = $state([
+    { name: "empty", color: "white", dose: undefined, unit: undefined },
+    { name: "Blank", color: "white", dose: undefined, unit: undefined },
+    { name: "NT", color: "white", dose: undefined, unit: undefined },
   ]);
 
   let pop: boolean = $state(false);
@@ -47,19 +47,10 @@
   let submit: boolean = $state(false);
   let reset: boolean = $state(false);
 
-  let color: string | undefined = $state("white");
   let dose: number | undefined = $state();
   let unit: string = $state("uM");
 
-  let ref_dose: number | undefined = $state();
-  let ref_unit: string = $state("uM");
-
-  const empty: { name: string; dose: undefined; unit: string; color: string } =
-    { name: "empty", dose: undefined, unit: "uM", color: "white" };
-
-  let selected:
-    | { name: string; dose: number; unit: string; color: string }
-    | undefined = $state();
+  let selected: number = $state(0);
 
   let clearAll = $state(false);
   let clearPot = $state(false);
@@ -75,7 +66,11 @@
     if (clearAll) {
       clearAll = false;
       clearPot = true;
-      farmaci = [];
+      farmaci = [
+        { name: "empty", color: "white", dose: undefined, unit: undefined },
+        { name: "Blank", color: "white", dose: undefined, unit: undefined },
+        { name: "NT", color: "white", dose: undefined, unit: undefined },
+      ];
       isDirty = false;
     }
   });
@@ -90,24 +85,24 @@
       <h1 class="print:hidden text-3xl mb-2">Legend</h1>
       <div id="legend" class="flex flex-col w-full items-center p-12">
         <div class="flex flex-col items-center xl:flex-row w-full xl:w-[700px]">
-          {#each defaults as def}
+          {#each { length: 2 } as _, i}
             <Farmaco
-              name={def.name}
-              dose={undefined}
-              unit={undefined}
-              bind:color={def.color}
+              name={farmaci[i + 1].name}
+              dose={farmaci[i + 1].dose}
+              unit={farmaci[i + 1].unit}
+              bind:color={farmaci[i + 1].color}
             />
           {/each}
         </div>
         <div
           class="print:px-[0px] flex flex-col w-full max-w-[700px] lg:px-[5px] items-center"
         >
-          {#each farmaci as farmaco}
+          {#each Array.from({ length: farmaci.length - 3 }, (_, i) => i + 3) as index}
             <Farmaco
-              name={farmaco.name}
-              dose={farmaco.dose}
-              unit={farmaco.unit}
-              bind:color={farmaco.color}
+              name={farmaci[index].name}
+              dose={farmaci[index].dose}
+              unit={farmaci[index].unit}
+              bind:color={farmaci[index].color}
             />
           {/each}
         </div>
@@ -152,11 +147,13 @@
               <Pot
                 bind:submit
                 bind:reset
-                selected={{ color, dose, unit, ref_unit, ref_dose }}
-                name={selected?.name}
                 bind:hidden
                 bind:count={a_count}
+                {selected}
+                u_sel={unit}
+                d_sel={dose}
                 clear={clearPot}
+                {farmaci}
               />
             {/each}
           {/if}
@@ -173,23 +170,17 @@
             <select
               bind:value={selected}
               onchange={() => {
-                color = selected?.color;
-                ref_dose = selected!.dose;
-                ref_unit = selected!.unit;
+                console.log(selected);
               }}
               name="farmaco"
               id="farmaco"
             >
-              {#each farmaci as farmaco}
-                <option value={farmaco}>{farmaco.name}</option>
+              {#each farmaci as farmaco, i}
+                <option value={i}>{farmaco.name}</option>
               {/each}
-              {#each defaults as def}
-                <option value={def}>{def.name}</option>
-              {/each}
-              <option value={empty}>{empty.name}</option>
             </select>
           </div>
-          {#if !(typeof selected == "undefined" || ["empty", "NT", "Blank"].includes(selected!.name))}
+          {#if selected > 2}
             <div class="flex flex-row justify-center">
               <label for="dose" class="inline-block">[C] : </label>
               <div class="flex flex-row justify-between w-2/3 gap-x-1">
@@ -217,12 +208,9 @@
             >
             <button
               class="rounded-lg text-center text-white bg-sky-600 mt-2 p-1"
-              disabled={typeof selected == "undefined" ||
-                (typeof dose == "undefined" &&
-                  !["empty", "NT", "Blank"].includes(selected.name))}
+              disabled={selected > 2}
               style="opacity: {typeof selected == 'undefined' ||
-              (typeof dose == 'undefined' &&
-                !['empty', 'NT', 'Blank'].includes(selected.name))
+              (typeof dose == 'undefined' && selected > 2)
                 ? '0.5'
                 : '1'}"
               onclick={() => {

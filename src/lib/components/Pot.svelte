@@ -8,15 +8,18 @@
   let ref_unit: string = $state("uM");
 
   let active = $state(false);
+  let index: number = $state(0);
 
   let {
     submit = $bindable(),
     reset = $bindable(),
     selected,
-    name,
+    u_sel,
+    d_sel,
     hidden = $bindable(),
     count = $bindable(),
     clear,
+    farmaci,
   } = $props();
 
   function getPower(p_unit: string) {
@@ -37,17 +40,19 @@
 
     if (count == 0) submit = false;
 
-    color = selected.color;
-    pot_name = name;
+    index = selected;
 
-    if (["empty", "NT", "Blank"].includes(name)) {
+    color = farmaci[index].color;
+    pot_name = farmaci[index].name;
+    ref_unit = farmaci[index].unit;
+    ref_dose = farmaci[index].dose;
+
+    if (index < 3) {
       dose = undefined;
       ref_dose = undefined;
     } else {
-      dose = selected.dose;
-      unit = selected.unit;
-      ref_unit = selected.ref_unit;
-      ref_dose = selected.ref_dose;
+      dose = d_sel;
+      unit = u_sel;
     }
   }
 
@@ -60,6 +65,10 @@
   $effect(() => {
     if (active && submit) changeState();
     else if (reset && active) deactivate();
+  });
+
+  $effect(() => {
+    color = farmaci[index].color;
   });
 
   $effect(() => {

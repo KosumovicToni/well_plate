@@ -48,7 +48,7 @@
   </div>
   <div class="flex w-full items-center justify-start mt-2">
     <label for="color-dropdown" class="flex font-bold"> Color : </label>
-    <div class="grid grid-cols-6 item-center">
+    <div class="flex flex-row item-center justify-center">
       {#each colors as col}
         <button
           type="button"
