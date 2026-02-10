@@ -183,22 +183,24 @@
               <option value={empty}>{empty.name}</option>
             </select>
           </div>
-          <div class="flex flex-row justify-center">
-            <label for="dose" class="inline-block">[C] : </label>
-            <div class="flex flex-row justify-between w-2/3 gap-x-1">
-              <input
-                type="text"
-                class="w-1/2 border-b-1 text-center"
-                bind:value={dose}
-              />
-              <select name="unit" id="unit" bind:value={unit} class="w-1/2">
-                <option value="uM">uM</option>
-                <option value="nM">nM</option>
-                <option value="ug/mL">ug/mL</option>
-                <option value="other">other</option>
-              </select>
+          {#if !(typeof selected == "undefined" || ["empty", "NT", "Blank"].includes(selected!.name))}
+            <div class="flex flex-row justify-center">
+              <label for="dose" class="inline-block">[C] : </label>
+              <div class="flex flex-row justify-between w-2/3 gap-x-1">
+                <input
+                  type="text"
+                  class="w-1/2 border-b-1 text-center"
+                  bind:value={dose}
+                />
+                <select name="unit" id="unit" bind:value={unit} class="w-1/2">
+                  <option value="uM">uM</option>
+                  <option value="nM">nM</option>
+                  <option value="ug/mL">ug/mL</option>
+                  <option value="other">other</option>
+                </select>
+              </div>
             </div>
-          </div>
+          {/if}
           <div class="flex w-full justify-center gap-x-2">
             <button
               class="rounded-lg text-center text-white mt-2 p-1 bg-red-600"
