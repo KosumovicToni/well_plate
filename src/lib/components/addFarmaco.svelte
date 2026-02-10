@@ -1,7 +1,11 @@
 <script lang="ts">
   import Color from "./Color.svelte";
 
-  let { pop = $bindable(), farmaci = $bindable() } = $props();
+  let {
+    pop = $bindable(),
+    farmaci = $bindable(),
+    isDirty = $bindable(),
+  } = $props();
 
   let colors: string[] = ["red", "blue", "green", "orange", "purple", "brown"];
   let name: string = $state("");
@@ -63,6 +67,7 @@
     onclick={() => {
       addFarmaco();
       pop = !pop;
+      isDirty = true;
     }}>add</button
   >
 </div>

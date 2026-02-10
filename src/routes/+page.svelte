@@ -17,10 +17,24 @@
 
     return () => mediaQuery.removeEventListener("change", handler);
   });
+
+  let isDirty: boolean = $state(false);
+
+  $effect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!isMobile && isDirty) event.preventDefault();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  });
 </script>
 
 {#if isMobile}
   <Mobile />
 {:else}
-  <App />
+  <App bind:isDirty />
 {/if}

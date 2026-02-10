@@ -5,9 +5,6 @@
   import Farmaco from "$lib/components/Farmaco.svelte";
   import AddFarmaco from "$lib/components/addFarmaco.svelte";
 
-  let rows = $state(8);
-  let cols = $state(12);
-
   type farmaco = {
     name: string;
     dose: number;
@@ -32,6 +29,11 @@
     "M",
     "N",
   ];
+
+  let { isDirty = $bindable() } = $props();
+
+  let rows = $state(8);
+  let cols = $state(12);
 
   let farmaci: farmaco[] = $state([]);
   let defaults: { name: string; color: string }[] = $state([
@@ -63,7 +65,10 @@
   let clearPot = $state(false);
 
   $effect(() => {
-    if (clearPot) clearPot = false;
+    if (clearPot) {
+      clearPot = false;
+      if (farmaci.length == 0) isDirty = false;
+    }
   });
 
   $effect(() => {
@@ -71,6 +76,7 @@
       clearAll = false;
       clearPot = true;
       farmaci = [];
+      isDirty = false;
     }
   });
 </script>
@@ -115,7 +121,7 @@
         >
 
         {#if pop}
-          <AddFarmaco bind:pop bind:farmaci />
+          <AddFarmaco bind:pop bind:farmaci bind:isDirty />
         {/if}
       </div>
     </div>
@@ -222,6 +228,7 @@
               onclick={() => {
                 hidden = true;
                 submit = true;
+                isDirty = true;
               }}>apply</button
             >
           </div>
