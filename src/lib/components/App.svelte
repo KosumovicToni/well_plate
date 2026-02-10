@@ -37,8 +37,8 @@
 
   let farmaci: farmaco[] = $state([
     { name: "empty", color: "white", dose: undefined, unit: undefined },
-    { name: "Blank", color: "white", dose: undefined, unit: undefined },
-    { name: "NT", color: "white", dose: undefined, unit: undefined },
+    { name: "Blank", color: "white", dose: 1, unit: "other" },
+    { name: "NT", color: "white", dose: 1, unit: "other" },
   ]);
 
   let pop: boolean = $state(false);
@@ -65,11 +65,10 @@
   $effect(() => {
     if (clearAll) {
       clearAll = false;
-      clearPot = true;
       farmaci = [
         { name: "empty", color: "white", dose: undefined, unit: undefined },
-        { name: "Blank", color: "white", dose: undefined, unit: undefined },
-        { name: "NT", color: "white", dose: undefined, unit: undefined },
+        { name: "Blank", color: "white", dose: 1, unit: "other" },
+        { name: "NT", color: "white", dose: 1, unit: "other" },
       ];
       isDirty = false;
     }
@@ -88,7 +87,7 @@
           {#each { length: 2 } as _, i}
             <Farmaco
               name={farmaci[i + 1].name}
-              dose={farmaci[i + 1].dose}
+              dose={undefined}
               unit={farmaci[i + 1].unit}
               bind:color={farmaci[i + 1].color}
             />
@@ -169,9 +168,7 @@
             <label for="">Reagent : </label>
             <select
               bind:value={selected}
-              onchange={() => {
-                console.log(selected);
-              }}
+              onchange={() => {}}
               name="farmaco"
               id="farmaco"
             >
@@ -208,9 +205,8 @@
             >
             <button
               class="rounded-lg text-center text-white bg-sky-600 mt-2 p-1"
-              disabled={selected > 2}
-              style="opacity: {typeof selected == 'undefined' ||
-              (typeof dose == 'undefined' && selected > 2)
+              disabled={typeof dose == "undefined" && selected > 2}
+              style="opacity: {typeof dose == 'undefined' && selected > 2
                 ? '0.5'
                 : '1'}"
               onclick={() => {

@@ -13,6 +13,7 @@
     <button
       class="font-bold p-1 rounded-md hover:bg-red-600 hover:text-white transition-all"
       onclick={() => {
+        clearPot = true;
         clearAll = true;
       }}>Clear All</button
     >

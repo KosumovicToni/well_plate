@@ -1,11 +1,6 @@
 <script lang="ts">
-  let color: string | undefined = $state("white");
   let dose: number | undefined = $state();
   let unit: string = $state("uM");
-  let pot_name: string = $state("");
-
-  let ref_dose: number | undefined = $state();
-  let ref_unit: string = $state("uM");
 
   let active = $state(false);
   let index: number = $state(0);
@@ -42,14 +37,18 @@
 
     index = selected;
 
-    color = farmaci[index].color;
-    pot_name = farmaci[index].name;
-    ref_unit = farmaci[index].unit;
-    ref_dose = farmaci[index].dose;
-
     if (index < 3) {
-      dose = undefined;
-      ref_dose = undefined;
+      if (index == 0) {
+        dose = undefined;
+        unit = "uM";
+      } else {
+        dose = 0.3;
+        unit = "other";
+      }
+      console.log(
+        (dose! * getPower(unit)) /
+          (farmaci[index].dose * getPower(farmaci[index].unit)),
+      );
     } else {
       dose = d_sel;
       unit = u_sel;
@@ -68,16 +67,10 @@
   });
 
   $effect(() => {
-    color = farmaci[index].color;
-  });
-
-  $effect(() => {
     if (clear) {
-      color = "white";
+      index = 0;
       dose = undefined;
       unit = "uM";
-      ref_dose = undefined;
-      pot_name = "";
     }
   });
 </script>
@@ -102,18 +95,20 @@
     >
       <div
         class="absolute inset-0 z-0"
-        style="background-color: {color}; opacity: {typeof ref_dose !==
-          'undefined' && typeof dose !== 'undefined'
-          ? (dose * getPower(unit)) / (ref_dose * getPower(ref_unit))
+        style="background-color: {farmaci[index]
+          .color}; opacity: {typeof farmaci[index].dose !== 'undefined' &&
+        typeof dose !== 'undefined'
+          ? (dose * getPower(unit)) /
+            (farmaci[index].dose * getPower(farmaci[index].unit))
           : 100}"
       ></div>
 
       <div
         class="relative z-10 flex flex-col font-bold text-center pointer-events-none"
       >
-        {#if ["NT", "Blank"].includes(pot_name)}
+        {#if ["NT", "Blank"].includes(farmaci[index].name)}
           <p class="text-wrap break-words leading-tight max-w-10 text-sm">
-            {pot_name}
+            {farmaci[index].name}
           </p>
         {:else}
           <p class="text-wrap break-words leading-tight max-w-10">
