@@ -119,7 +119,7 @@
         {/if}
       </div>
     </div>
-    <div id="well-plate" class="flex flex-col my-auto grow pr-3 print:pr-0!">
+    <div id="well-plate" class="flex flex-col items-center my-auto grow pr-3 print:pr-0!">
       {#each { length: rows + 1 } as _, i}
         <div
           class="grid justify-items-center py-2 px-1"
@@ -158,12 +158,27 @@
           {/if}
         </div>
       {/each}
+      <div class="flex w-full flex-row items-center justify-center gap-x-4 mt-10">
+    <button
+      class="font-bold p-1 rounded-md hover:bg-red-600 hover:text-white transition-all"
+      onclick={() => {
+        clearPot = true;
+        clearAll = true;
+      }}>Start Over</button
+    >
+    <button
+      class="font-bold p-1 rounded-md hover:bg-red-600 hover:text-white transition-all"
+      onclick={() => {
+        clearPot = true;
+      }}>Clear Plate</button
+    >
+  </div>
     </div>
     {#if !hidden}
       <div
-        class="print:hidden absolute top-0 flex flex-col items-center w-full z-20 h-auto p-2 font-bold justify-center"
+        class="print:hidden absolute top-0 flex flex-col items-center w-full z-20 h-auto p-2 font-bold justify-center "
       >
-        <div class="bg-white border-2 py-2 rounded-lg w-70">
+        <div class="bg-white border-2 py-2 rounded-lg w-70 shadow-xl">
           <div class="flex flex-row justify-center gap-x-3">
             <label for="">Reagent : </label>
             <select
@@ -220,7 +235,7 @@
       </div>
     {/if}
   </div>
-  <Footer bind:clearAll bind:clearPot />
+  <Footer />
 </div>
 
 <style>

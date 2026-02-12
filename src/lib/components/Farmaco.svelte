@@ -13,7 +13,7 @@
 
 <div
   id="farmaco"
-  class="relative flex flex-row items-center justify-between p-3 m-1 border-2 rounded-lg font-bold bg-white w-full lg:max-w-[700px] gap-2 text-xl"
+  class="relative flex flex-row items-center justify-between p-3 m-1 border-2 rounded-lg font-bold bg-white w-full lg:max-w-[700px] gap-2 text-xl shadow-lg"
 >
   <div class="min-w-0 lg:max-w-12s0 flex-1">
     <p class="text-wrap break-words leading-tight text-gray-800">

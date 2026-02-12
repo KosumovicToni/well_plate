@@ -1,28 +1,11 @@
 <script lang="ts">
-  let { clearPot = $bindable(), clearAll = $bindable() } = $props();
 </script>
 
 <div
-  class="print:hidden flex flex-row w-full items-center justify-between py-12"
+  class="print:hidden flex flex-row w-full items-center justify-center pb-8"
 >
-  <div class="flex text-center w-1/2 items-center justify-center">
-    <p class="text-sm">© well-plate 2026</p>
-  </div>
-
-  <div class="flex w-1/2 flex-row items-center justify-center gap-x-4">
-    <button
-      class="font-bold p-1 rounded-md hover:bg-red-600 hover:text-white transition-all"
-      onclick={() => {
-        clearPot = true;
-        clearAll = true;
-      }}>Clear All</button
-    >
-    <button
-      class="font-bold p-1 rounded-md hover:bg-red-600 hover:text-white transition-all"
-      onclick={() => {
-        clearPot = true;
-      }}>Clear Pots</button
-    >
+  <div class="flex text-center">
+    <p class="text-sm">© 2026 well-plate</p>
   </div>
   <!--
       <div>
